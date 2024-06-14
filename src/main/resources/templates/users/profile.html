@@ -4,150 +4,123 @@
 <head lang="en">
     <meta charset="UTF-8"/>
     <title>Update Profile</title>
-    <link rel="stylesheet" href="/main.css"/>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
     <style>
-        /* Custom styles */
-        :root {
-            --primaryColor: #007bff; /* Update this color to match the Add Friend button */
-        }
-
         body {
             font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            background: url('https://33.media.tumblr.com/4893e945c6d3a67780efc1e4158bd1ac/tumblr_nut2otAr5C1rhlvg8o1_1280.gif') no-repeat center center fixed;
+            background: url('data:image/jpeg;base64,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') no-repeat center center fixed;
             background-size: cover;
         }
 
-        .navbar {
-            width: 100%;
-            background: var(--primaryColor);
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-        }
-
-        .navbar a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-        }
-
-        .navbar input[type="text"] {
-            padding: 5px;
-            border-radius: 5px;
-            border: none;
-            margin-left: 20px;
-        }
-
         .profile-container {
-            width: 100%;
-            max-width: 600px;
+            width: 80%;
+            max-width: 800px;
             background: rgba(255, 255, 255, 0.85);
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            position: relative;
-            margin: 20px auto;
+            padding: 30px;
+            margin-top: 150px;
         }
 
-        .logo {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 100px; /* Adjust size as needed */
-            height: 100px; /* Adjust size as needed */
+        .profile-container h1 {
+            font-size: 40px;
+            margin-bottom: 30px;
         }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .profile-info {
-            margin-bottom: 20px;
-        }
-
-        .profile-info label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .profile-info input,
-        .profile-info select {
-            padding: 10px;
-            background: #f1f1f1;
-            border: none;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            width: 100%;
-        }
-
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <a href="/logout">Logout</a>
-    <a href="/posts">Posts</a>
-    <input type="text" placeholder="Search...">
-</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Acebook</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/posts">Posts</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        </form>
+    </div>
+</nav>
 
-<div class="profile-container">
-    <img src="https://i.imgur.com/1z5NYzX.gif" alt="Acebook Logo" class="logo">
-    <h1>Update Profile</h1>
-
-    <form th:action="@{/profile}" th:object="${user}" method="post">
-        <div class="profile-info">
-            <label for="username">Username</label>
-            <input type="text" id="username" th:field="*{username}" readonly />
-
-            <label for="mobileNumber">Mobile Number</label>
-            <input type="text" id="mobileNumber" th:field="*{mobileNumber}" />
-
-            <label for="emailAddress">Email Address</label>
-            <input type="email" id="emailAddress" th:field="*{emailAddress}" />
-
-            <label for="gender">Gender</label>
-            <select id="gender" th:field="*{gender}">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
-
-            <label for="country">Country</label>
-            <input type="text" id="country" th:field="*{country}" />
-
-            <label for="language">Language</label>
-            <input type="text" id="language" th:field="*{language}" />
-        </div>
-        <button type="submit" class="add-friend-btn">Update Profile</button>
-    </form>
+<div class="container d-flex justify-content-center">
+    <div class="profile-container">
+        <h1>Profile</h1>
+        <form th:action="@{/profile}" th:object="${user}" method="post">
+            <div class="form-group row">
+                <label for="username" class="col-sm-4 col-form-label">Username</label>
+                <div class="col-sm-8">
+                    <input type="text" id="username" class="form-control" th:field="*{username}" readonly />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mobileNumber" class="col-sm-4 col-form-label">Mobile Number</label>
+                <div class="col-sm-8">
+                    <input type="text" id="mobileNumber" class="form-control" th:field="*{mobileNumber}" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="emailAddress" class="col-sm-4 col-form-label">Email Address</label>
+                <div class="col-sm-8">
+                    <input type="email" id="emailAddress" class="form-control" th:field="*{emailAddress}" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="gender" class="col-sm-4 col-form-label">Gender</label>
+                <div class="col-sm-8">
+                    <select id="gender" class="form-control" th:field="*{gender}">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="country" class="col-sm-4 col-form-label">Country</label>
+                <div class="col-sm-8">
+                    <input type="text" id="country" class="form-control" th:field="*{country}" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="language" class="col-sm-4 col-form-label">Language</label>
+                <div class="col-sm-8">
+                    <input type="text" id="language" class="form-control" th:field="*{language}" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Update Profile</button>
+        </form>
+        <div th:if="${message}" th:text="${message}" class="alert alert-success mt-3" id="flashMessage"></div>
+    </div>
 </div>
 
 <script>
-    document.getElementById('addFriendBtn').addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent default action to avoid page reload or form submission
-        var btn = this;
-        if (btn.classList.contains('sent')) {
-            btn.classList.remove('sent');
-            btn.textContent = 'Add Friend';
-        } else {
-            btn.classList.add('sent');
-            btn.textContent = 'Friend request sent ✓';
+    // Hide the flash message after 5 seconds
+    document.addEventListener("DOMContentLoaded", function() {
+        var flashMessage = document.getElementById("flashMessage");
+        if (flashMessage) {
+            setTimeout(function() {
+                flashMessage.style.display = "none";
+            }, 2000); // 2000 milliseconds = 2 seconds
         }
     });
 </script>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaF8FYpHVbMzjEG3zFQLPpjd1hMJ5qVVpH3m"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
 </body>
 </html>
