@@ -113,22 +113,14 @@ public class UsersController {
         return userRepository.findByUsername(username);
     }
 
-//    @GetMapping("/all")
-//    public String getAllUsers(@RequestParam Long currentUserId, Model model) {
-//        List<User> users = (List<User>) userRepository.findAll();
-//
-//        // Fetch friends of the current user
-//        Arrays friendEntities = friendRepository.findByUserId(currentUserId);
-//        Set<Long> friendIds = friendEntities.stream()
-//                .map(friend -> friend.getFriend().getId())
-//                .collect(Collectors.toSet());
-//
-//        // Add attributes to the model
-//        model.addAttribute("users", users);
-//        model.addAttribute("friendIds", friendIds);
-//        model.addAttribute("currentUserId", currentUserId);
-//
-//        return "all-users";
+
+//    @GetMapping("/friends")
+//    public String showFriends(Model model) {
+//        User currentUser = getCurrentUser();
+//        if (currentUser != null) {
+//            model.addAttribute("friends", currentUser.getFriends());
+//        }
+//        return "users/friendList";
 //    }
 
 }
