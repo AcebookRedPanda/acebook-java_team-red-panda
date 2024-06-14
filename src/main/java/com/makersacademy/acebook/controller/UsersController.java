@@ -4,7 +4,9 @@ import com.makersacademy.acebook.model.Authority;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.AuthoritiesRepository;
 import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+
+
+
+import java.util.Objects;
 
 
 @Controller
@@ -22,6 +31,8 @@ public class UsersController {
     UserRepository userRepository;
     @Autowired
     AuthoritiesRepository authoritiesRepository;
+    @Autowired
+    EmailService emailService;
 
     @GetMapping("/register")
     public String signup(Model model) {
@@ -30,12 +41,32 @@ public class UsersController {
     }
 
     @PostMapping("/users")
-    public RedirectView signup(@ModelAttribute User user) {
-        userRepository.save(user);
-        Authority authority = new Authority(user.getUsername(), "ROLE_USER");
-        authoritiesRepository.save(authority);
-        return new RedirectView("/login");
+    public String signup(@ModelAttribute User user, Model model) {
+        try {
+            userRepository.save(user);
+            Authority authority = new Authority(user.getUsername(), "ROLE_USER");
+            authoritiesRepository.save(authority);
+
+            // Send confirmation email
+            emailService.sendSignUpConfirmation(user.getEmailAddress(), user.getUsername());
+
+            return "redirect:/login";
+        } catch (DataIntegrityViolationException e) {
+            if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
+                if (Objects.requireNonNull(e.getMessage()).contains("users.username")) {
+                    model.addAttribute("errorMessage", "Username already exists. Please choose a different username.");
+                } else if (e.getMessage().contains("users.emailAddress")) {
+                    model.addAttribute("errorMessage", "Email address already exists. Please use a different email.");
+                } else {
+                    model.addAttribute("errorMessage", "A database error occurred. Please try again.");
+                }
+            } else {
+                model.addAttribute("errorMessage", "A database error occurred. Please try again.");
+            }
+            return "users/new";
+        }
     }
+
 
     @GetMapping("/profile")
     public String showProfile(Model model) {
@@ -45,7 +76,7 @@ public class UsersController {
     }
 
     @PostMapping("/profile")
-    public RedirectView updateProfile(@ModelAttribute User user) {
+    public RedirectView updateProfile(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
         User currentUser = getCurrentUser();
         currentUser.setMobileNumber(user.getMobileNumber());
         currentUser.setEmailAddress(user.getEmailAddress());
@@ -53,11 +84,13 @@ public class UsersController {
         currentUser.setCountry(user.getCountry());
         currentUser.setLanguage(user.getLanguage());
         userRepository.save(currentUser);
+        redirectAttributes.addFlashAttribute("message", "Profile updated successfully.");
+
+
         return new RedirectView("/profile");
     }
 
     private User getCurrentUser() {
-        // Assuming you're using Spring Security to manage user authentication
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {

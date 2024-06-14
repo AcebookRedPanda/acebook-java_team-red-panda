@@ -12,35 +12,32 @@
             e.value = tempValue;
         }
 
-<!--        // Function to hide flash message after 5 seconds-->
-<script>
-    function hideFlashMessage(id) {
-        setTimeout(function() {
-            var flashMessage = document.getElementById(id);
-            if (flashMessage) {
-                flashMessage.style.opacity = '0';
-                setTimeout(function() {
-                    flashMessage.style.display = 'none';
-                }, 500); // Allow time for fade out
-            }
-        }, 5000);
-    }
+        function hideFlashMessage(id) {
+            setTimeout(function() {
+                var flashMessage = document.getElementById(id);
+                if (flashMessage) {
+                    flashMessage.style.opacity = '0';
+                    setTimeout(function() {
+                        flashMessage.style.display = 'none';
+                    }, 500); // Allow time for fade out
+                }
+            }, 5000);
+        }
 
-    <!--        // Call hideFlashMessage for each flash message on page load-->
-    window.onload = function() {
-        let flashMessages = document.getElementsByClassName('flash-message');
-        for (var i = 0; i < flashMessages.length; i++) {
-            let flashMessage = flashMessages[i];
-            if (flashMessage.innerText.trim() !== '') {
-                hideFlashMessage(flashMessage.id);
-            } else {
-                flashMessage.style.display = 'none';
+        window.onload = function() {
+            let flashMessages = document.getElementsByClassName('flash-message');
+            for (var i = 0; i < flashMessages.length; i++) {
+                let flashMessage = flashMessages[i];
+                if (flashMessage.innerText.trim() !== '') {
+                    hideFlashMessage(flashMessage.id);
+                } else {
+                    flashMessage.style.display = 'none';
+                }
             }
         }
-    }
     </script>
 
-    </script>
+
 
 
     <style>
@@ -271,6 +268,15 @@
         </form>
     </div>
 
+    <!-- Flash messages -->
+    <div id="flash-message-[[${post.id}]]-success" class="flash-message" th:if="${message}">
+        <p th:text="${message}"></p>
+    </div>
+    <div id="flash-message-[[${post.id}]]-error" class="flash-message error" th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
+
+
     <!-- List of posts -->
     <ul th:if="${not #lists.isEmpty(posts)}">
         <!-- Iterate over each post and display its content -->
@@ -322,14 +328,12 @@
                 </form>
                 <hr>
 
+
+
                 <div th:if="${post.user.id == currentUser.id}">
-                    <!-- Flash messages -->
-                    <div id="flash-message-[[${post.id}]]" class="flash-message" th:if="${message}">
-                        <p th:text="${message}"></p>
-                    </div>
-                    <div id="flash-error-[[${iterStat.index}]]" class="flash-message error" th:if="${error}">
-                        <p th:text="${error}"></p>
-                    </div>
+
+
+
                     <!-- Conditional Edit Form -->
 
                     <form th:action="@{'/posts/' + ${post.id} + '/edit'}" method="post" th:object="${post}">

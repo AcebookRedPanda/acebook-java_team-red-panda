@@ -17,10 +17,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String username;
     private String password;
     private boolean enabled = true;
+//    need be int
     private String mobileNumber;
+    @Column(unique = true)
     private String emailAddress;
     private String gender;
     private String country;
