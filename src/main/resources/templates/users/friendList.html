@@ -101,7 +101,7 @@
     <h1>My Friends</h1>
     <div id="friends-list">
         <ul>
-            <li th:each="friend : ${friends}" th:text="${friend.username}"></li>
+            <li th:each="friend : ${friends}" th:text="${friend.username}">Friend Username</li>
         </ul>
     </div>
 </div>

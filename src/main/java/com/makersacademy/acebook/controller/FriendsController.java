@@ -2,26 +2,21 @@ package com.makersacademy.acebook.controller;
 
 
 import com.makersacademy.acebook.model.Friend;
-import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.FriendRepository;
 import com.makersacademy.acebook.repository.UserRepository;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.Optional;
 
 
 @Controller
@@ -33,49 +28,44 @@ public class FriendsController {
     @Autowired
     UserRepository userRepository;
 
-
-    // Endpoint to list friends
-//    @GetMapping("/friends")
-//    public String listFriends(Model model, Principal principal) {
-//
-//
-//        User currentUser = userRepository.findByUsername(principal.getName());
-//        List<Friend> friends = friendRepository.findByUser(currentUser);
-////        model.addAttribute("currentUser", currentUser);
-//        model.addAttribute("friends", currentUser.getFriends());
-//        return "users/friendList"; // Returns the friendlist.html view
-//    }
-
     @GetMapping("/friends")
-    public String listFriends(Model model, Principal principal) {
-        User currentUser = userRepository.findByUsername(principal.getName());
-        List<User> friends = new ArrayList<>(currentUser.getFriends()); // Retrieve friends from the current user
-        model.addAttribute("currentUser", currentUser);
-        model.addAttribute("friends", friends);
-        return "users/friendList"; // Returns the friendList.html view
+    public String showFriends(Model model) {
+        User currentUser = getCurrentUser();
+        if (currentUser != null) {
+            List<User> friends = friendRepository.findFriendsByUser(currentUser);
+            model.addAttribute("friends", friends);
+        }
+        return "users/friendList";
     }
 
-
     // Method to add friends
-    @PostMapping("/addfriend")
-    public RedirectView create(@RequestParam String friendUsername, @AuthenticationPrincipal Principal principal, RedirectAttributes redirectAttributes) {
+    @PostMapping("/friends/add")
+    public RedirectView addFriend(@RequestParam Long friendId) {
+        User currentUser = getCurrentUser();
+        User friend = userRepository.findById(friendId).orElse(null);
 
-        User currentUser = userRepository.findByUsername(principal.getName());
-        User friendUser = userRepository.findByUsername(friendUsername);
-        if (friendUser != null && !currentUser.equals(friendUser)) {
-            Friend friend = new Friend();
-            friend.setUser(currentUser);
-            friend.setFriend(friendUser);
-//            friend.setCreatedAt(new Date());
-            friendRepository.save(friend);
-            redirectAttributes.addFlashAttribute("message", "Friend added successfully.");
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Invalid friend username.");
+        if (friend != null && !currentUser.equals(friend)) {
+            currentUser.getFriends().add(friend);
+            friend.getFriends().add(currentUser);
+            userRepository.save(currentUser);
+            userRepository.save(friend);
         }
+
         return new RedirectView("/friends");
     }
 
 
+
+        private User getCurrentUser() {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username;
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+            return userRepository.findByUsername(username);
+        }
 
     // Endpoint to list all users
     @GetMapping("/all-users")
@@ -86,10 +76,4 @@ public class FriendsController {
         model.addAttribute("allUsers", allUsers);
         return "users/all-users"; // Returns the all-users.html view
     }
-
-
-
-
-
-
-}
+    }
