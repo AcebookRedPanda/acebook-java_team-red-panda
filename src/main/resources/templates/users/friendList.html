@@ -1,34 +1,109 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
 <head lang="en">
     <meta charset="UTF-8">
     <title>FriendList</title>
+    <style>
+        /* Style for the body element, setting the font, margin, padding, and background */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* Frog gif, feel free to change :) */
+            background: url('https://33.media.tumblr.com/4893e945c6d3a67780efc1e4158bd1ac/tumblr_nut2otAr5C1rhlvg8o1_1280.gif') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Styles for the navigation bar */
+        .navbar {
+            width: 100%;
+            background-color: #027bff !important;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style for the links in the navigation bar */
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        /* Style for the links in the navigation bar when hovered over */
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        /* Style for the search input in the navigation bar */
+        .navbar input[type="text"] {
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+            margin-left: 20px;
+            width: 150px;
+        }
+
+        /* Styles for the main container */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 80px auto 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Style for the main heading */
+        .container h1 {
+            font-size: 32px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Style for the friends list */
+        #friends-list ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        /* Styles for list items inside the friends list */
+        #friends-list ul li {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<nav>
-<!--    <ul>-->
-<!--        <li><a href="/posts">Posts</a></li>-->
-<!--        <li><a href="/users/friendList?currentUserId=${currentUser.Id}">My Friends</a></li>-->
-<!--        <li><a href="/users/all-users?currentUserId=${currentUser.Id}">All Users</a></li>-->
-<!--    </ul>-->
-    <ul>
-        <li><a href="/posts">Posts</a></li>
-        <li><a href="/friends">My Friends</a></li>
-        <li><a th:href="@{/all-users(currentUserId=${currentUser.id})}">All Users</a></li>
-    </ul>
+<!-- Navigation bar with links and search input -->
+<div class="navbar">
+    <a href="/logout">Logout</a>
+    <a href="/all-users">All Users</a>
+    <a href="/profile">Profile</a>
+    <a href="/posts">Posts</a>
+    <span>Will</span>
+    <input type="text" placeholder="Search...">
+</div>
 
-</nav>
-
-
-<h1>My Friends</h1>
-<div id="friends-list">
-    <ul>
-
-        <li th:each="friend : ${friends}" th:text="${friend.username}"></li>
-
-    </ul>
-
+<div class="container">
+    <h1>My Friends</h1>
+    <div id="friends-list">
+        <ul>
+            <li th:each="friend : ${friends}" th:text="${friend.username}"></li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>

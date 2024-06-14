@@ -4,11 +4,126 @@
     <meta charset="UTF-8">
     <title>All Users</title>
     <link rel="stylesheet" href="/main.css"/>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://33.media.tumblr.com/4893e945c6d3a67780efc1e4158bd1ac/tumblr_nut2otAr5C1rhlvg8o1_1280.gif') no-repeat center center fixed !important;
+            background-size: cover;
+            color: #333;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #027bff;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-left,
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-left a,
+        .navbar-right a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+
+        .navbar-left a:hover,
+        .navbar-right a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #027bff;
+            color: white;
+        }
+
+        td form {
+            margin: 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background: #027bff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            button {
+                padding: 8px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="navbar">
-    <a href="/logout">Logout</a>
-    <a href="/friends">Friends List</a>
+    <div class="navbar-left">
+        <a href="/logout">Logout</a>
+        <a href="/friends">Friends List</a>
+        <a href="/profile">Profile</a>
+        <a href="/posts">Posts</a>
+    </div>
+    <div class="navbar-right">
+        <span sec:authentication="name"></span>
+        <input type="text" placeholder="Search...">
+    </div>
 </div>
 <div class="container">
     <h1>All Users</h1>
@@ -16,13 +131,12 @@
         <thead>
         <tr>
             <th>Username</th>
-
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${allUsers}">
             <td th:text="${user.username}"></td>
-
             <td>
                 <form th:action="@{users/friendList}" method="post">
                     <input type="hidden" name="friendUsername" th:value="${user.username}"/>
@@ -35,14 +149,3 @@
 </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-

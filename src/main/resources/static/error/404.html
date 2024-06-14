@@ -27,44 +27,48 @@
     }
     /* Style for the navbar */
     .navbar {
-      width: 60px; /* Set a width for the sidebar */
-      height: 100vh; /* Full viewport height */
+      width: 100%; /* Full width */
       background-color: #027bff; /* Blue background */
       color: white; /* White text color */
-      position: fixed; /* Fixed position at left */
-      top: 0; /* Align to top */
-      left: 0; /* Align to left */
       display: flex; /* Use flexbox for layout */
-      flex-direction: column; /* Arrange children in a column */
-      align-items: center; /* Center align children horizontally */
-      padding-top: 20px; /* Padding at the top */
+      justify-content: space-around; /* Space out the links */
+      padding: 10px; /* Padding at the top */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     /* Style for the navbar button */
-    .navbar button {
-      background-color: #027bff; /* Blue background */
-      border: none; /* No border */
+    .navbar a {
       color: white; /* White text */
+      text-decoration: none; /* Remove underline */
       padding: 10px; /* Padding */
       font-size: 16px; /* Font size */
       cursor: pointer; /* Pointer cursor on hover */
-      margin: 10px 0; /* Margin between buttons */
-      width: 100%; /* Full width of the navbar */
-      text-align: center; /* Center text */
+      margin: 0 10px; /* Margin between buttons */
     }
     /* Style for navbar button hover effect */
-    .navbar button:hover {
+    .navbar a:hover {
       background-color: #005bb5; /* Darker blue on hover */
+      border-radius: 5px; /* Rounded corners */
     }
     /* Add padding to the main content to account for the navbar */
     .main-content {
-      margin-left: 60px; /* Margin equal to navbar width */
       padding: 20px; /* Padding around the content */
+    }
+    .navbar input[type="text"] {
+      padding: 5px;
+      border-radius: 5px;
+      border: none;
+      margin-left: 20px;
     }
   </style>
 </head>
 <body>
 <div class="navbar">
-  <button onclick="window.location.href='http://localhost:8080'">Home</button>
+  <a href="/logout">Logout</a>
+  <a href="/all-users">All Users</a>
+  <a href="/friends">Friends List</a>
+  <a href="/posts">Posts</a>
+  <a href="/">Home</a>
+  <input type="text" placeholder="Search...">
 </div>
 
 <div class="main-content">
